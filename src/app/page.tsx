@@ -1,95 +1,69 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import styles from "./page.module.css"
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ul>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ul>
+  const home_wrapper_Ref = useRef<HTMLElement>(null);
+  const search_wrapper_Ref = useRef<HTMLElement>(null);
+  const guide_wrapper_Ref = useRef<HTMLElement>(null);
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  useEffect(() => {
+    if (home_wrapper_Ref.current && search_wrapper_Ref.current && guide_wrapper_Ref.current) {
+      ScrollTrigger.create({
+        trigger: home_wrapper_Ref.current,
+        start: "bottom bottom",
+        end: "bottom top",
+        pin: true,
+        pinSpacing: false,
+        markers: true,
+      });
+
+      ScrollTrigger.create({
+        trigger: search_wrapper_Ref.current,
+        start: "bottom bottom",
+        end: "bottom top",
+        pin: true,
+        pinSpacing: false,
+        markers: true,
+      });
+
+      ScrollTrigger.create({
+        trigger: guide_wrapper_Ref.current,
+        start: "bottom bottom",
+        pin: true,
+        pinSpacing: false,
+        markers: true,
+      });
+    }
+  }, []);
+
+  return (
+    <div className={styles.wrapper}>
+      <header></header>
+      <div className={styles.main}>
+        <section className={`${styles.home_wrapper} ${styles.wrapper_section}`} ref={home_wrapper_Ref}>
+          <div className={styles.home_inner}>
+            <div className={styles.title}>
+              div
+            </div>
+          </div>
+        </section>
+        <section className={`${styles.search_wrapper} ${styles.wrapper_section}`} ref={search_wrapper_Ref}>
+          <div className={styles.search_inner}>
+
+          </div>
+        </section>
+        <section className={`${styles.guide_wrapper} ${styles.wrapper_section}`} ref={guide_wrapper_Ref}>
+          <div className={styles.guide_inner}>
+
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
