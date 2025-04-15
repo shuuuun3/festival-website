@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Noto_Sans_JP } from 'next/font/google'
 import { BIZ_UDMincho } from 'next/font/google'
 import "./globals.css"
+import MenuIcon from "../components/MenuIcon"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +49,7 @@ export default function RootLayout({
         <meta charSet="utf-8" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${notoSansJp.variable} ${mincho.variable}`}>
+        <MenuIcon />
         {children}
       </body>
     </html>

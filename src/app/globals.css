@@ -17,6 +17,10 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -43,4 +47,8 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.mincho {
+  font-family: var(--font-biz-ud-mincho), serif;
 }
