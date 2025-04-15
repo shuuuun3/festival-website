@@ -60,12 +60,20 @@ export default function Home() {
           x: () => {
             const targetRect = logo_target_Ref.current!.getBoundingClientRect();
             const logoRect = logo_Ref.current!.getBoundingClientRect();
-            return targetRect.left - logoRect.left;
+            return (
+              targetRect.left +
+              targetRect.width / 2 -
+              (logoRect.left + logoRect.width / 2)
+            );
           },
           y: () => {
             const targetRect = logo_target_Ref.current!.getBoundingClientRect();
             const logoRect = logo_Ref.current!.getBoundingClientRect();
-            return targetRect.top - logoRect.top;
+            return (
+              targetRect.top +
+              targetRect.height / 2 -
+              (logoRect.top + logoRect.height / 2)
+            );
           },
           scale: 1.2,
           scrollTrigger: {
