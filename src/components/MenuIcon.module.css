@@ -2,7 +2,7 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 500;
 }
 
 .menu_icon {
@@ -16,7 +16,6 @@
   align-items: center;
   cursor: pointer;
   position: relative;
-  z-index: 2;
 }
 
 .menu_content {
@@ -25,27 +24,26 @@
   right: 20px;
   width: 50vw;
   height: 50vh;
-  background-color: rgba(255, 185, 185, 0.8);
+  /* background-color: #F2F2F2; */
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   opacity: 0;
-  z-index: 1001;
+  z-index: 501;
   pointer-events: none;
 
   @media screen and (max-width: 768px) {
-    width: 90vw;
+    width: 91vw;
     height: 80vh;
-
   }
-}
 
-.menu_content p {
-  color: white;
-  font-size: 1.5rem;
-  margin: 1rem 0;
+  p {
+    color: white;
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
 }
 
 .ham {
@@ -58,8 +56,9 @@
   user-select: none;
 
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -1px;
+  right: -1px;
+  z-index: 502;
 
 }
 .hamRotate.active {

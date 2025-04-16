@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import styles from "./MenuIcon.module.css";
 
@@ -9,50 +9,100 @@ export default function MenuIcon() {
   const menuIcon_Ref = useRef<HTMLDivElement>(null);
   const content_Ref = useRef<HTMLDivElement>(null);
   const isOpen = useRef(false);
+  const animation = useRef<gsap.core.Timeline | null>(null);
+  const animationMenu = useRef<gsap.core.Timeline | null>(null);
+
+  useEffect(() => {
+    // アニメーションを初期化
+    if (menuIcon_Ref.current && content_Ref.current) {
+      const targetRect = content_Ref.current.getBoundingClientRect();
+
+      animationMenu.current = gsap.timeline()
+      .fromTo(menuIcon_Ref.current,
+        {
+          width: "60px",
+          height: "60px",
+          borderRadius: "50%",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+        },
+        {
+          width: targetRect.width,
+          height: targetRect.height,
+          borderColor: "transparent",
+          borderRadius: "20px",
+          backgroundColor: "#F2F2F2",
+          duration: 0.5,
+          ease: "none",
+        }
+      );
+
+
+      animation.current = gsap.timeline({ paused: true })
+        .add(animationMenu.current)
+        .to(content_Ref.current, {
+          opacity: 1,
+          duration: 0.5,
+          ease: "none",
+        }, ">");
+    }
+
+    // スクロールを検知してメニューを閉じる
+    const handleScroll = () => {
+      if (isOpen.current) {
+        closeMenu();
+      }
+    };
+
+    // タッチスクロールを無効化する関数
+    const preventScroll = (e: TouchEvent) => {
+      if (isOpen.current) {
+        e.preventDefault();
+      }
+    };
+
+    // イベントリスナーを追加
+    window.addEventListener("scroll", handleScroll);
+    document.addEventListener("touchmove", preventScroll, { passive: false });
+
+    return () => {
+      // イベントリスナーをクリーンアップ
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("touchmove", preventScroll);
+    };
+  }, []);
+
+  function closeMenu() {
+    if (!menuIcon_Ref.current || !content_Ref.current || !animation.current || !animationMenu.current) return;
+
+    isOpen.current = false;
+
+    svg_Ref.current?.classList.remove(styles.active);
+
+    gsap.set(content_Ref.current, {
+      opacity: 0,
+    });
+
+    animation.current.reverse();
+
+    // 背景のスクロールを有効化
+    document.body.style.overflow = "";
+  }
 
   function handleMenuClick() {
-    if (!menuIcon_Ref.current || !content_Ref.current) return;
+    if (!menuIcon_Ref.current || !content_Ref.current || !animation.current) return;
 
     isOpen.current = !isOpen.current;
 
     svg_Ref.current?.classList.toggle(styles.active);
 
-    const targetRect = content_Ref.current.getBoundingClientRect();
-
     if (isOpen.current) {
-      gsap.to(menuIcon_Ref.current, {
-        width: targetRect.width,
-        height: targetRect.height,
-        borderRadius: "20px",
-        duration: 0.5,
-        ease: "none",
-        onComplete: () => {
-          gsap.to(content_Ref.current, {
-            opacity: 1,
-            duration: 0.5,
-            ease: "none",
-          });
+      // アニメーションを再生
+      animation.current.play();
 
-        }
-      });
+      // 背景のスクロールを無効化
+      document.body.style.overflow = "hidden";
     } else {
-      gsap.fromTo(
-        menuIcon_Ref.current,
-        { borderRadius: "20px" }, // 開始値
-        {
-          width: "60px",
-          height: "60px",
-          borderRadius: "100px", // 終了値
-          duration: 0.5, // アニメーションをゆっくりにする
-          ease: "none",
-        }
-      );
-
-      gsap.to(content_Ref.current, {
-        opacity: 0,
-        duration: 0.5,
-        ease: "none",
-      });
+      closeMenu();
     }
   }
 
