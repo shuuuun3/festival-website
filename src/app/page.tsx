@@ -158,7 +158,17 @@ export default function Home() {
         </div>
         <div className={styles.about_wrapper}>
           <div className={styles.logo_target} ref={logo_target_Ref}></div>
+          <div className={styles.about_content}></div>
+          <div className={styles.about_btn}>
+            <a href="" className={styles.flipBtn}>
+              <div className={styles.flipBtn_inner}>
+                <div className={`${styles.flipBtn_front} ${styles.flipBtn_item}`}>BUTTON</div>
+                <div className={`${styles.flipBtn_back} ${styles.flipBtn_item}`}>ABOUT JUNNI</div>
+              </div>
+            </a>
+          </div>
         </div>
+
       </section>
       <section className={styles.search_wrapper} ref={search_wrapper_Ref}>
 
