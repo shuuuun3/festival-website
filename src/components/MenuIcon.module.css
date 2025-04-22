@@ -22,8 +22,8 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  width: 50vw;
-  height: 50vh;
+  width: 30vw;
+  height: 90vh;
   /* background-color: #F2F2F2; */
   border-radius: 20px;
   display: flex;
@@ -35,7 +35,7 @@
   pointer-events: none;
 
   @media screen and (max-width: 768px) {
-    width: 91vw;
+    width: calc(100vw - 40px);
     height: 80vh;
   }
 

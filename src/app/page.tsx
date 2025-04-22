@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./page.module.css"
 import Logo from "../components/Logo";
+import FlipButton from "../components/FlipButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -160,12 +161,7 @@ export default function Home() {
           <div className={styles.logo_target} ref={logo_target_Ref}></div>
           <div className={styles.about_content}></div>
           <div className={styles.about_btn}>
-            <a href="" className={styles.flipBtn}>
-              <div className={styles.flipBtn_inner}>
-                <div className={`${styles.flipBtn_front} ${styles.flipBtn_item}`}>BUTTON</div>
-                <div className={`${styles.flipBtn_back} ${styles.flipBtn_item}`}>ABOUT JUNNI</div>
-              </div>
-            </a>
+            <FlipButton front="LEAN MORE" back="LEAN MORE" />
           </div>
         </div>
 

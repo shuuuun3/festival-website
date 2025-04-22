@@ -189,54 +189,13 @@
       }
 
       .about_btn {
+        width: 100%;
+        margin-top: 5vh;
         display: flex;
         justify-content: center;
-
-        .flipBtn {
-          position: relative;
-          display: block;
-          width: 100%;
-          perspective: 1000px;
-        }
-
-        .flipBtn_inner {
-          perspective: 800px; /* 3D空間を定義 */
-          transform-style: preserve-3d; /* 子要素を3Dで保持 */
-          transition: transform 0.2s ease-in-out; /* 滑らかな回転 */
-          transform-origin: bottom center; /* 下端を支点に回転 */
-        }
-
-        .flipBtn_front, .flipBtn_back {
-          position: absolute;
-          width: 100%; height: 100%;
-          backface-visibility: hidden; /* 裏面のちらつきを防止 */
-        }
-
-        .flipBtn_back {
-          color: #dcff46;
-          background-color: #1c1d21;
-          transform: rotateX(90deg) translateY(-100%); /* 初期状態：裏面を上方へ */
-        }
-
-        .flipBtn_inner:hover {
-          transform: rotateX(-90deg); /* 支点を中心に回転 */
-        }
-
-        .flipBtn_item {
-          position: absolute;
-          display: flex;
-          justify-content: center;
-          width: 100%;
-          padding: 1.1em 0 .9em;
-          font-family: junni;
-          font-size: clamp(25px, 20.385px + .601vw, 30px);
-          line-height: 1;
-          letter-spacing: .1em;
-          border-radius: 6px;
-          backface-visibility: hidden;
-        }
-
+        align-items: center;
       }
+
     }
   }
 
