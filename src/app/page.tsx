@@ -167,7 +167,9 @@ export default function Home() {
 
       </section>
       <section className={styles.search_wrapper} ref={search_wrapper_Ref}>
-
+        <div className={styles.search_inner}>
+          <h2 className={styles.search_title}>SEARCH</h2>
+        </div>
       </section>
       <section className={styles.guide_wrapper} ref={guide_wrapper_Ref}>
 
