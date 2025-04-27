@@ -5,7 +5,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./page.module.css"
 import Logo from "../components/Logo";
-import FlipButton from "../components/FlipButton";
+import FlipButton from "../components/layout/FlipButton/FlipButton";
+import FunctionItem from "../components/home/FunctionItem/FunctionItem";
+import { animateTextByChar } from "../utils/animateTextByChar";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,6 +19,12 @@ export default function Home() {
   const menu_icon_Ref = useRef<SVGSVGElement>(null);
   const logo_Ref = useRef<SVGSVGElement>(null);
   const logo_target_Ref = useRef<HTMLDivElement>(null);
+  const search_title_Ref = useRef<HTMLHeadingElement>(null);
+  const function_map_Ref = useRef<HTMLDivElement>(null);
+  const function_timetable_Ref = useRef<HTMLDivElement>(null);
+  const function_allEvents_Ref = useRef<HTMLDivElement>(null);
+  const function_pamphlet_Ref = useRef<HTMLDivElement>(null);
+  const eventSearch_Ref = useRef<HTMLDivElement>(null);
 
   function handleMenuClick() {
     menu_icon_Ref.current?.classList.toggle(styles.active);
@@ -29,7 +37,13 @@ export default function Home() {
       guide_wrapper_Ref.current &&
       logo_Ref.current &&
       logo_target_Ref.current &&
-      title_wrapper_Ref.current
+      title_wrapper_Ref.current &&
+      search_title_Ref.current &&
+      function_map_Ref.current &&
+      function_timetable_Ref.current &&
+      function_allEvents_Ref.current &&
+      function_pamphlet_Ref.current &&
+      eventSearch_Ref.current
     ) {
       ScrollTrigger.create({
         trigger: home_wrapper_Ref.current,
@@ -135,6 +149,38 @@ export default function Home() {
           }
         );
       }
+
+      if (search_title_Ref.current) {
+        animateTextByChar(search_title_Ref.current, {
+          triggerStart: "bottom bottom",
+        })
+      }
+
+      const functionItems = [
+        function_map_Ref.current,
+        function_timetable_Ref.current,
+        function_allEvents_Ref.current,
+        function_pamphlet_Ref.current,
+        eventSearch_Ref.current,
+      ];
+
+      // 初期状態を透明に
+      gsap.set(functionItems, { opacity: 0, y: 40 });
+
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: search_title_Ref.current,
+          start: "top center",
+          toggleActions: "play none none reverse",
+        },
+      })
+        .to(functionItems, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: "power2.out",
+        });
     }
   }, []);
 
@@ -168,7 +214,25 @@ export default function Home() {
       </section>
       <section className={styles.search_wrapper} ref={search_wrapper_Ref}>
         <div className={styles.search_inner}>
-          <h2 className={styles.search_title}>SEARCH</h2>
+          <h2 className={styles.search_title} ref={search_title_Ref}>SEARCH</h2>
+          <div className={styles.function_wrapper}>
+            <div className={styles.functionItems}>
+              <FunctionItem className="function_map" title="マップ" icon="/icon/map.svg" ref={function_map_Ref}></FunctionItem>
+              <FunctionItem className="function_timetable" title="タイムテーブル" icon="/icon/timetable.svg" ref={function_timetable_Ref}></FunctionItem>
+              <FunctionItem className="function_allEvents" title="企画一覧" icon="/icon/allEvents.svg" ref={function_allEvents_Ref}></FunctionItem>
+              <FunctionItem className="function_pamphlet" title="パンフレット" icon="/icon/pamphlet.svg" ref={function_pamphlet_Ref}></FunctionItem>
+            </div>
+            <div className={styles.eventSearch} ref={eventSearch_Ref}>
+              <a href="">
+                <div className={styles.eventSearch_inner}>
+                  <div className={styles.icon_wrapper}>
+                    <img src="/icon/search.svg" alt="search" className={styles.search_icon} />
+                  </div>
+                  <p>企画検索</p>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </section>
       <section className={styles.guide_wrapper} ref={guide_wrapper_Ref}>

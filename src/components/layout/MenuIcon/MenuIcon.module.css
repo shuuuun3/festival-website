@@ -39,6 +39,10 @@
     height: 80vh;
   }
 
+  @media screen and (max-width: 480px) {
+    height: 77vh;
+  }
+
   p {
     color: white;
     font-size: 1.5rem;
