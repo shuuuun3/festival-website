@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 import styles from "./page.module.css"
 import Logo from "../components/Logo";
 import FlipButton from "../components/layout/FlipButton/FlipButton";
@@ -181,6 +182,10 @@ export default function Home() {
           stagger: 0.15,
           ease: "power2.out",
         });
+
+      window.dispatchEvent(
+        new CustomEvent("searchWrapperReady", { detail: search_wrapper_Ref.current })
+      );
     }
   }, []);
 
@@ -217,10 +222,10 @@ export default function Home() {
           <h2 className={styles.search_title} ref={search_title_Ref}>SEARCH</h2>
           <div className={styles.function_wrapper}>
             <div className={styles.functionItems}>
-              <FunctionItem className="function_map" title="マップ" icon="/icon/map.svg" ref={function_map_Ref}></FunctionItem>
-              <FunctionItem className="function_timetable" title="タイムテーブル" icon="/icon/timetable.svg" ref={function_timetable_Ref}></FunctionItem>
-              <FunctionItem className="function_allEvents" title="企画一覧" icon="/icon/allEvents.svg" ref={function_allEvents_Ref}></FunctionItem>
-              <FunctionItem className="function_pamphlet" title="パンフレット" icon="/icon/pamphlet.svg" ref={function_pamphlet_Ref}></FunctionItem>
+              <FunctionItem href="/function/map" className="function_map" title="マップ" icon="/icon/map.svg" ref={function_map_Ref}></FunctionItem>
+              <FunctionItem href="/function/timetable" className="function_timetable" title="タイムテーブル" icon="/icon/timetable.svg" ref={function_timetable_Ref}></FunctionItem>
+              <FunctionItem href="/function/allEvents" className="function_allEvents" title="企画一覧" icon="/icon/allEvents.svg" ref={function_allEvents_Ref}></FunctionItem>
+              <FunctionItem href="/function/pamphlet" className="function_pamphlet" title="パンフレット" icon="/icon/pamphlet.svg" ref={function_pamphlet_Ref}></FunctionItem>
             </div>
             <div className={styles.eventSearch} ref={eventSearch_Ref}>
               <a href="">

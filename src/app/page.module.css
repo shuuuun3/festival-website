@@ -112,7 +112,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
 
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 1000px) {
               flex-direction: column;
               align-items: center;
               height: 300px;
@@ -120,7 +120,7 @@
 
             .title_logo {
               width: 70vw;
-              max-width: 400px;
+              max-width: 450px;
               height: auto;
               object-fit: cover;
             }
@@ -131,14 +131,14 @@
               align-items: flex-start;
               gap: 1rem;
 
-              @media screen and (max-width: 768px) {
+              @media screen and (max-width: 1000px) {
                 justify-content: center;
                   align-items: center;
               }
 
               p {
                 font-style: italic;
-                font-size: 1.8rem;
+                font-size: 2vw;
                 margin-top: 1rem;
                 color: #fff;
 
@@ -152,7 +152,7 @@
                   margin-left: 2rem;
                 }
 
-                @media screen and (max-width: 768px) {
+                @media screen and (max-width: 1000px) {
                   font-size: 1.3rem;
                   margin-left: 0;
                   align-items: center;
@@ -287,8 +287,8 @@
 
               .icon_wrapper {
                 margin: 1.5rem;
-                width: 4rem;
-                height: 4rem;
+                width: 3vw;
+                height: 3vw;
 
                 .search_icon {
                   width: 100%;
@@ -296,19 +296,19 @@
                 }
 
                 @media screen and (max-width: 768px) {
-                  width: 3rem;
-                  height: 3rem;
+                  width: 5vw;
+                  height: 5vw;
                 }
 
                 @media screen and (max-width: 480px) {
-                  width: 2rem;
-                  height: 2rem;
+                  width: 7vw;
+                  height: 7vw;
                 }
               }
 
               p {
                 display: block;
-                font-size: 2rem;
+                font-size: 1.8vw;
                 color: #474747;
                 font-weight: 500;
                 position: absolute;
@@ -318,11 +318,11 @@
 
 
                 @media screen and (max-width: 768px) {
-                  font-size: 1.5rem;
+                  font-size: 3vw;
                 }
 
                 @media screen and (max-width: 480px) {
-                  font-size: 1rem;
+                  font-size: 4vw;
                 }
               }
             }

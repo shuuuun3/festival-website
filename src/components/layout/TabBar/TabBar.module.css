@@ -4,13 +4,17 @@
   left: 50%;
   transform: translateX(-50%);
   width: 90vw;
-  height: calc(90vw * 0.04);
+  height: calc(90vw * 0.05);
   border-radius: 10rem;
   background-color: #F4F4F4;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 200;
+
+  @media screen and (max-width: 1200px) {
+    height: calc(90vw * 0.07);
+  }
 
   @media screen and (max-width: 768px) {
     height: calc(90vw * 0.1);
@@ -30,6 +34,10 @@
       /* width: calc(90vw * 0.05 * 0.5); */
       width: calc(90vw / 2 / 5);
       height: calc(90vw * 0.05 * 0.5);
+
+      @media screen and (max-width: 1200px) {
+        height: calc(90vw * 0.07 * 0.5);
+      }
 
       @media screen and (max-width: 768px) {
         height: calc(90vw * 0.1 * 0.5);
