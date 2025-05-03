@@ -91,6 +91,7 @@ export default function Home() {
             start: "top top",
             end: "bottom top",
             scrub: 1.2,
+            invalidateOnRefresh: true,
           },
         }
       )
