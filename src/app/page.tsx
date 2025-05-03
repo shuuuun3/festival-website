@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
 import styles from "./page.module.css"
 import Logo from "../components/Logo";
 import FlipButton from "../components/layout/FlipButton/FlipButton";
@@ -17,7 +16,6 @@ export default function Home() {
   const title_wrapper_Ref = useRef<HTMLDivElement>(null);
   const search_wrapper_Ref = useRef<HTMLElement>(null);
   const guide_wrapper_Ref = useRef<HTMLElement>(null);
-  const menu_icon_Ref = useRef<SVGSVGElement>(null);
   const logo_Ref = useRef<SVGSVGElement>(null);
   const logo_target_Ref = useRef<HTMLDivElement>(null);
   const search_title_Ref = useRef<HTMLHeadingElement>(null);
@@ -26,10 +24,6 @@ export default function Home() {
   const function_allEvents_Ref = useRef<HTMLDivElement>(null);
   const function_pamphlet_Ref = useRef<HTMLDivElement>(null);
   const eventSearch_Ref = useRef<HTMLDivElement>(null);
-
-  function handleMenuClick() {
-    menu_icon_Ref.current?.classList.toggle(styles.active);
-  }
 
   useEffect(() => {
     if (
@@ -120,7 +114,7 @@ export default function Home() {
       if (pElements) {
         const allSpans: HTMLElement[] = [];
 
-        pElements.forEach((p, index) => {
+        pElements.forEach((p) => {
           const text = p.textContent || "";
           p.innerHTML = "";
           text.split("").forEach((char) => {
