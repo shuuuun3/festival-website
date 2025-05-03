@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
 import styles from "./page.module.css"
 import Logo from "../components/Logo";
 import FlipButton from "../components/layout/FlipButton/FlipButton";
@@ -26,10 +25,6 @@ export default function Home() {
   const function_allEvents_Ref = useRef<HTMLDivElement>(null);
   const function_pamphlet_Ref = useRef<HTMLDivElement>(null);
   const eventSearch_Ref = useRef<HTMLDivElement>(null);
-
-  function handleMenuClick() {
-    menu_icon_Ref.current?.classList.toggle(styles.active);
-  }
 
   useEffect(() => {
     if (

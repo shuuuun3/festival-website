@@ -24,5 +24,5 @@ const FunctionItem = forwardRef<HTMLDivElement, FunctionItemProps>(
     </div>
   )
 );
-
+FunctionItem.displayName = 'FunctionItem';
 export default FunctionItem;
