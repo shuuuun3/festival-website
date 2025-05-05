@@ -18,19 +18,21 @@ export function animateTextByChar(
   }
 ) {
   if (!el) return;
-  const text = el.textContent || "";
-  el.innerHTML = "";
-  const spans: HTMLElement[] = [];
-  text.split("").forEach((char) => {
-    const span = document.createElement("span");
-    span.textContent = char;
-    span.style.display = "inline-block";
-    span.style.transform = "translateY(100%)";
-    span.style.opacity = "0";
-    el.appendChild(span);
-    spans.push(span);
-  });
-
+  // spanがなければ生成し直す
+  if (!el.querySelector("span")) {
+    const text = el.textContent || "";
+    el.innerHTML = "";
+    text.split("").forEach((char) => {
+      const span = document.createElement("span");
+      span.textContent = char;
+      span.style.display = "inline-block";
+      span.style.transform = "translateY(100%)";
+      span.style.opacity = "0";
+      el.appendChild(span);
+    });
+  }
+  // spanを取得してアニメーション
+  const spans = Array.from(el.querySelectorAll("span"));
   gsap.to(spans, {
     y: 0,
     opacity: 1,
