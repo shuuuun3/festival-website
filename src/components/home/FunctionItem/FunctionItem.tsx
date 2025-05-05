@@ -2,6 +2,7 @@
 import React from 'react';
 import styles from './FunctionItem.module.css';
 import { forwardRef } from 'react';
+import Link from 'next/link';
 
 type FunctionItemProps = {
   title?: string;
@@ -11,16 +12,16 @@ type FunctionItemProps = {
 }
 
 const FunctionItem = forwardRef<HTMLDivElement, FunctionItemProps>(
-  ({ title, icon, href = "", className = "" }, ref) => (
+  ({ title, icon, href = "", className = ""}, ref) => (
     <div className={`${styles.functionItem} ${className}`} ref={ref}>
-      <a href={href} className={styles.inner}>
+      <Link href={href} className={styles.inner} scroll={false}>
         <div className={styles.icon}>
           {icon && (
             <img src={icon} alt={title} className={styles.icon_svg} />
           )}
         </div>
         <div className={styles.title}>{title}</div>
-      </a>
+      </Link>
     </div>
   )
 );

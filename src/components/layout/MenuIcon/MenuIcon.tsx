@@ -3,6 +3,8 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import styles from "./MenuIcon.module.css";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function MenuIcon() {
   const svg_Ref = useRef<SVGSVGElement>(null);
@@ -11,6 +13,16 @@ export default function MenuIcon() {
   const isOpen = useRef(false);
   const animation = useRef<gsap.core.Timeline | null>(null);
   const animationMenu = useRef<gsap.core.Timeline | null>(null);
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // パスが変わったらメニューを閉じる
+    if (isOpen.current) {
+      handleMenuClick();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   useEffect(() => {
     // アニメーションを初期化
@@ -95,14 +107,16 @@ export default function MenuIcon() {
 
     svg_Ref.current?.classList.toggle(styles.active);
 
-    if (isOpen.current) {
+    if (isOpen.current && content_Ref.current) {
       // アニメーションを再生
       animation.current.play();
 
       // 背景のスクロールを無効化
       document.body.style.overflow = "hidden";
+      content_Ref.current.style.pointerEvents = "auto";
     } else {
       closeMenu();
+      content_Ref.current.style.pointerEvents = "none";
     }
   }
 
@@ -133,9 +147,11 @@ export default function MenuIcon() {
 
       {/* メニューコンテンツ */}
       <div className={styles.menu_content} ref={content_Ref}>
-        <p>メニュー項目 1</p>
-        <p>メニュー項目 2</p>
-        <p>メニュー項目 3</p>
+        <Link href="/">ホーム</Link>
+        <Link href="/function/map">マップ</Link>
+        <Link href="/function/pamphlet">パンフレット</Link>
+        <Link href="/function/allEvents">企画一覧</Link>
+        <Link href="/function/timetable">タイムテーブル</Link>
       </div>
     </div>
   );
