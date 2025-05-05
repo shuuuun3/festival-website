@@ -3,7 +3,6 @@
 import { useEffect } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import Image from "next/image"
 import styles from "./page.module.css"
 
 gsap.registerPlugin(ScrollTrigger)
