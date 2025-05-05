@@ -1,37 +1,61 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 /**
- * 任意の要素に一文字ずつ下から現れるアニメーションを適用
- * @param el 対象のHTMLElement
- * @param options GSAPやScrollTriggerのオプション（必要に応じて拡張可）
+ * 要素内のすべてのテキストノードを再帰的に探し、
+ * 文字ごとに span でラップし置換する
  */
+function wrapCharsRecursively(el: HTMLElement) {
+  const walker = document.createTreeWalker(
+    el,
+    NodeFilter.SHOW_TEXT,
+    null
+  );
+  const textNodes: Text[] = [];
+  let node: Node | null;
+  while ((node = walker.nextNode())) {
+    if (node.nodeValue) {
+      textNodes.push(node as Text);
+    }
+  }
+
+  textNodes.forEach(textNode => {
+    const parent = textNode.parentElement;
+    if (!parent) return;
+    const text = textNode.nodeValue || "";
+    const fragment = document.createDocumentFragment();
+    // 文字ごとに span 要素を作成
+    text.split("").forEach(char => {
+      const span = document.createElement("span");
+      if (char === ' ') {
+        span.innerHTML = '&nbsp;'; // 半角スペースの場合は &nbsp; を設定
+      } else {
+        span.textContent = char; // それ以外の文字は textContent を使用
+      }
+      span.style.display = "inline-block";
+      span.style.transform = "translateY(100%)";
+      span.style.opacity = "0";
+      fragment.appendChild(span);
+    });
+    parent.replaceChild(fragment, textNode);
+  });
+}
+
 export function animateTextByChar(
   el: HTMLElement,
   options?: {
     triggerStart?: string;
+    triggerEnd?: string;
     stagger?: number;
     duration?: number;
     ease?: string;
+    toggleActions?: string;
   }
 ) {
   if (!el) return;
-  // spanがなければ生成し直す
-  if (!el.querySelector("span")) {
-    const text = el.textContent || "";
-    el.innerHTML = "";
-    text.split("").forEach((char) => {
-      const span = document.createElement("span");
-      span.textContent = char;
-      span.style.display = "inline-block";
-      span.style.transform = "translateY(100%)";
-      span.style.opacity = "0";
-      el.appendChild(span);
-    });
-  }
-  // spanを取得してアニメーション
+  // すべてのテキストノードを文字ごとに span へ
+  wrapCharsRecursively(el);
+
   const spans = Array.from(el.querySelectorAll("span"));
   gsap.to(spans, {
     y: 0,
@@ -42,7 +66,8 @@ export function animateTextByChar(
     scrollTrigger: {
       trigger: el,
       start: options?.triggerStart ?? "bottom bottom",
-      toggleActions: "play none none reverse",
+      end: options?.triggerEnd ?? "top top",
+      toggleActions: options?.toggleActions ?? "play none none reverse",
     },
   });
 }

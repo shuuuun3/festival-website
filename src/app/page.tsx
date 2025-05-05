@@ -24,6 +24,7 @@ export default function Home() {
   const function_allEvents_Ref = useRef<HTMLDivElement>(null);
   const function_pamphlet_Ref = useRef<HTMLDivElement>(null);
   const eventSearch_Ref = useRef<HTMLDivElement>(null);
+  const mainContext = useRef<gsap.Context | null>(null); // gsap.context 用の ref
 
   useEffect(() => {
     if (
@@ -40,149 +41,157 @@ export default function Home() {
       function_pamphlet_Ref.current &&
       eventSearch_Ref.current
     ) {
-      ScrollTrigger.create({
-        trigger: home_wrapper_Ref.current,
-        start: "bottom bottom",
-        end: "bottom top",
-        pin: true,
-        pinSpacing: false,
-      });
+      // gsap.context を使用してアニメーションと ScrollTrigger を管理
+      mainContext.current = gsap.context(() => {
+        ScrollTrigger.create({
+          trigger: home_wrapper_Ref.current!, // Non-null assertion operator (!) を追加
+          start: "bottom bottom",
+          end: "bottom top",
+          pin: true,
+          pinSpacing: false,
+        });
 
-      ScrollTrigger.create({
-        trigger: search_wrapper_Ref.current,
-        start: "bottom bottom",
-        end: "bottom top",
-        pin: true,
-        pinSpacing: false,
-      });
+        ScrollTrigger.create({
+          trigger: search_wrapper_Ref.current!, // Non-null assertion operator (!) を追加
+          start: "bottom bottom",
+          end: "bottom top",
+          pin: true,
+          pinSpacing: false,
+        });
 
-      ScrollTrigger.create({
-        trigger: guide_wrapper_Ref.current,
-        start: "bottom bottom",
-        pin: true,
-        pinSpacing: false,
-      });
-
-      gsap.fromTo(
-        logo_Ref.current,
-        { x: 0, y: 0 },
-        {
-          x: () => {
-            const targetRect = logo_target_Ref.current!.getBoundingClientRect();
-            const logoRect = logo_Ref.current!.getBoundingClientRect();
-            return (
-              targetRect.left +
-              targetRect.width / 2 -
-              (logoRect.left + logoRect.width / 2)
-            );
-          },
-          y: () => {
-            const targetRect = logo_target_Ref.current!.getBoundingClientRect();
-            const logoRect = logo_Ref.current!.getBoundingClientRect();
-            return (
-              targetRect.top +
-              targetRect.height / 2 -
-              (logoRect.top + logoRect.height / 2)
-            );
-          },
-          scale: 1.2,
-          scrollTrigger: {
-            trigger: title_wrapper_Ref.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.2,
-            invalidateOnRefresh: true,
-          },
-        }
-      )
-
-      gsap.fromTo(
-        logo_Ref.current.querySelectorAll("path"),
-        { fill: "#fff" },
-        {
-          fill: "#2A2948",
-          scrollTrigger: {
-            trigger: title_wrapper_Ref.current,
-            start: "top top",
-            end: "bottom top",
-            toggleActions: "play none none reverse",
-            scrub: 1.2,
-          },
-        }
-      )
-
-      const pElements = title_wrapper_Ref.current?.querySelectorAll("p");
-      if (pElements) {
-        const allSpans: HTMLElement[] = [];
-
-        pElements.forEach((p) => {
-          const text = p.textContent || "";
-          p.innerHTML = "";
-          text.split("").forEach((char) => {
-            const span = document.createElement("span");
-            span.textContent = char;
-            span.style.display = "inline-block";
-            p.appendChild(span);
-            allSpans.push(span);
-          });
+        ScrollTrigger.create({
+          trigger: guide_wrapper_Ref.current!, // Non-null assertion operator (!) を追加
+          start: "bottom bottom",
+          pin: true,
+          pinSpacing: false,
         });
 
         gsap.fromTo(
-          allSpans,
-          { opacity: 1 },
+          logo_Ref.current,
+          { x: 0, y: 0 },
           {
-            opacity: 0,
-            stagger: {
-              each: 0.05,
-              from: "start",
+            x: () => {
+              const targetRect = logo_target_Ref.current!.getBoundingClientRect();
+              const logoRect = logo_Ref.current!.getBoundingClientRect();
+              return (
+                targetRect.left +
+                targetRect.width / 2 -
+                (logoRect.left + logoRect.width / 2)
+              );
             },
+            y: () => {
+              const targetRect = logo_target_Ref.current!.getBoundingClientRect();
+              const logoRect = logo_Ref.current!.getBoundingClientRect();
+              return (
+                targetRect.top +
+                targetRect.height / 2 -
+                (logoRect.top + logoRect.height / 2)
+              );
+            },
+            scale: 1.2,
             scrollTrigger: {
-              trigger: title_wrapper_Ref.current,
+              trigger: title_wrapper_Ref.current!, // Non-null assertion operator (!) を追加
               start: "top top",
-              end: "center top",
+              end: "bottom top",
+              scrub: 1.2,
+              invalidateOnRefresh: true,
+            },
+          }
+        )
+
+        gsap.fromTo(
+          logo_Ref.current!.querySelectorAll("path"), // Non-null assertion operator (!) を追加
+          { fill: "#fff" },
+          {
+            fill: "#2A2948",
+            scrollTrigger: {
+              trigger: title_wrapper_Ref.current!, // Non-null assertion operator (!) を追加
+              start: "top top",
+              end: "bottom top",
+              toggleActions: "play none none reverse",
               scrub: 1.2,
             },
           }
-        );
-      }
+        )
 
-      if (search_title_Ref.current) {
-        animateTextByChar(search_title_Ref.current, {
-          triggerStart: "bottom bottom",
+        const pElements = title_wrapper_Ref.current?.querySelectorAll("p");
+        if (pElements) {
+          const allSpans: HTMLElement[] = [];
+
+          pElements.forEach((p) => {
+            const text = p.textContent || "";
+            p.innerHTML = "";
+            text.split("").forEach((char) => {
+              const span = document.createElement("span");
+              span.textContent = char;
+              span.style.display = "inline-block";
+              p.appendChild(span);
+              allSpans.push(span);
+            });
+          });
+
+          gsap.fromTo(
+            allSpans,
+            { opacity: 1 },
+            {
+              opacity: 0,
+              stagger: {
+                each: 0.05,
+                from: "start",
+              },
+              scrollTrigger: {
+                trigger: title_wrapper_Ref.current!, // Non-null assertion operator (!) を追加
+                start: "top top",
+                end: "center top",
+                scrub: 1.2,
+              },
+            }
+          );
+        }
+
+        if (search_title_Ref.current) {
+          animateTextByChar(search_title_Ref.current, {
+            triggerStart: "bottom bottom",
+          })
+        }
+
+        const functionItems = [
+          function_map_Ref.current,
+          function_timetable_Ref.current,
+          function_allEvents_Ref.current,
+          function_pamphlet_Ref.current,
+          eventSearch_Ref.current,
+        ];
+
+        // 初期状態を透明に
+        gsap.set(functionItems, { opacity: 0, y: 40 });
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: search_title_Ref.current!, // Non-null assertion operator (!) を追加
+            start: "top center",
+            toggleActions: "play none none reverse",
+          },
         })
-      }
+          .to(functionItems, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power2.out",
+          });
 
-      const functionItems = [
-        function_map_Ref.current,
-        function_timetable_Ref.current,
-        function_allEvents_Ref.current,
-        function_pamphlet_Ref.current,
-        eventSearch_Ref.current,
-      ];
-
-      // 初期状態を透明に
-      gsap.set(functionItems, { opacity: 0, y: 40 });
-
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: search_title_Ref.current,
-          start: "top center",
-          toggleActions: "play none none reverse",
-        },
-      })
-        .to(functionItems, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.15,
-          ease: "power2.out",
-        });
-
-      window.dispatchEvent(
-        new CustomEvent("searchWrapperReady", { detail: search_wrapper_Ref.current })
-      );
+        window.dispatchEvent(
+          new CustomEvent("searchWrapperReady", { detail: search_wrapper_Ref.current! }) // Non-null assertion operator (!) を追加
+        );
+      }, home_wrapper_Ref); // スコープを指定
     }
-  }, []);
+
+    // クリーンアップ関数
+    return () => {
+      mainContext.current?.revert(); // context 内のすべてのアニメーションと ScrollTrigger を kill
+    };
+  }, []); // 依存配列は空のまま
 
   return (
     <div className={styles.main}>
@@ -217,10 +226,10 @@ export default function Home() {
           <h2 className={styles.search_title} ref={search_title_Ref}>SEARCH</h2>
           <div className={styles.function_wrapper}>
             <div className={styles.functionItems}>
-              <FunctionItem href="/function/map" className="function_map" title="マップ" icon="/icon/map.svg" ref={function_map_Ref}></FunctionItem>
-              <FunctionItem href="/function/timetable" className="function_timetable" title="タイムテーブル" icon="/icon/timetable.svg" ref={function_timetable_Ref}></FunctionItem>
-              <FunctionItem href="/function/allEvents" className="function_allEvents" title="企画一覧" icon="/icon/allEvents.svg" ref={function_allEvents_Ref}></FunctionItem>
-              <FunctionItem href="/function/pamphlet" className="function_pamphlet" title="パンフレット" icon="/icon/pamphlet.svg" ref={function_pamphlet_Ref}></FunctionItem>
+              <FunctionItem href="/function/map" className="function_map" title="マップ" icon="/icon/map.svg" ref={function_map_Ref} scroll={false}></FunctionItem>
+              <FunctionItem href="/function/timetable" className="function_timetable" title="タイムテーブル" icon="/icon/timetable.svg" ref={function_timetable_Ref} scroll={false}></FunctionItem>
+              <FunctionItem href="/function/allEvents" className="function_allEvents" title="企画一覧" icon="/icon/allEvents.svg" ref={function_allEvents_Ref} scroll={false}></FunctionItem>
+              <FunctionItem href="/function/pamphlet" className="function_pamphlet" title="パンフレット" icon="/icon/pamphlet.svg" ref={function_pamphlet_Ref} scroll={false}></FunctionItem>
             </div>
             <div className={styles.eventSearch} ref={eventSearch_Ref}>
               <a href="">

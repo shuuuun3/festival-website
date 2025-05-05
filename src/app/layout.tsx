@@ -5,7 +5,8 @@ import { BIZ_UDMincho } from 'next/font/google'
 import "./globals.css"
 import MenuIcon from "../components/layout/MenuIcon/MenuIcon"
 import TabBar from "../components/layout/TabBar/TabBar"
-// import { useEffect, useRef } from "react"
+import { unstable_ViewTransition as ViewTransition } from "react"
+import { ScrollManager } from "../components/layout/ScrollManager"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,31 +46,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const tabBar_Ref = useRef<HTMLDivElement>(null);
-
-  // useEffect(() => {
-  //   function handleSearchWrapperReady(e: CustomEvent) {
-  //     const triggerEl = e.detail as HTMLElement;
-  //     if (tabBar_Ref.current && triggerEl) {
-  //       gsap.set(tabBar_Ref.current, { opacity: 0 });
-  //       gsap.to(tabBar_Ref.current, {
-  //         opacity: 1,
-  //         duration: 0.6,
-  //         ease: "power2.out",
-  //         scrollTrigger: {
-  //           trigger: triggerEl,
-  //           start: "top bottom",
-  //           toggleActions: "play none none reverse",
-  //         },
-  //       });
-  //     }
-  //   }
-  //   window.addEventListener("searchWrapperReady", handleSearchWrapperReady as EventListener);
-
-  //   return () => {
-  //     window.removeEventListener("searchWrapperReady", handleSearchWrapperReady as EventListener);
-  //   };
-  // }, []);
 
   return (
     <html>
@@ -77,9 +53,12 @@ export default function RootLayout({
         <meta charSet="utf-8" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${notoSansJp.variable} ${mincho.variable}`}>
-        <MenuIcon />
-        <TabBar />
-        {children}
+        <ViewTransition>
+          <ScrollManager />
+          <MenuIcon />
+          <TabBar />
+          {children}
+        </ViewTransition>
       </body>
     </html>
   );

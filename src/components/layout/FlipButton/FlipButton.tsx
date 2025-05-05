@@ -1,4 +1,5 @@
 import styles from "./FlipButton.module.css";
+import Link from "next/link";
 
 type FlipButtonProps = {
   front: string;
@@ -10,7 +11,7 @@ type FlipButtonProps = {
 export default function FlipButton({ front, back, href = "", className = "" }: FlipButtonProps) {
   return (
     <div className={styles.about_btn} data-circle-cursor="more_detail">
-      <a href={href} className={`${styles.flipBtn} ${className}`}>
+      <Link href={href} className={`${styles.flipBtn} ${className}`}>
         <div className={styles.flipBtnInner}>
           <div className={`${styles.flipBtnItem} ${styles.flipBtnFront}`} data-flip="front">
             <span className={styles.flipBtnText} data-hover>
@@ -48,7 +49,7 @@ export default function FlipButton({ front, back, href = "", className = "" }: F
             </span>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 }
