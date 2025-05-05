@@ -3,13 +3,6 @@
 import styles from "./timetable_client.module.css";
 import { useEffect, useRef } from "react";
 import { animateTextByChar } from "@/src/utils/animateTextByChar";
-<<<<<<< HEAD
-=======
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
->>>>>>> 3874ad11fa3fa3618e2657e58826d9bfd12f0a8d
 
 export default function Timetable_Client({
   serverPart,
