@@ -4,6 +4,6 @@ import TimetableClient from "./timetable_client";
 // サーバーコンポーネント
 export default function TimetablePage() {
   return (
-    <TimetableClient serverPart={<EventContent />} />
+    <TimetableClient serverPart={<EventContent locationType="ステージ" />} />
   );
 }

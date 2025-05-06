@@ -18,6 +18,10 @@
     }
   }
 
+  .serverPart {
+    margin-top: 80px;
+  }
+
   .wrapper {
     height: 300vh;
     width: 100%;

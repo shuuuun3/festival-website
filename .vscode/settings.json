@@ -23,5 +23,6 @@
     "fs",
     "http",
     "net"
-  ]
+  ],
+  "bitoAI.codeCompletion.enableAutoCompletion": false
 }

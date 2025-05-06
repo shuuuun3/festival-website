@@ -54,7 +54,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${notoSansJp.variable} ${mincho.variable}`}>
         <ViewTransition>
-          <ScrollManager />
+          {/* <ScrollManager /> */}
           <MenuIcon />
           <TabBar />
           {children}
