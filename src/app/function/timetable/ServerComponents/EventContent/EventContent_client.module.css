@@ -80,11 +80,136 @@
     width: 100%;
   }
 
+  .timeText {
+    color: gray;
+    font-size: .75rem;
+    line-height: 1rem;
+    transform: translateY(-6.75px);
+    grid-column-start: 1;
+
+    &:nth-child(5) {
+      grid-row: 2;
+    }
+
+    &:nth-child(6) { /* k=2: 開始行 32 + 60*0 = 32. 終了行 32+60=92 */
+      grid-row: 32;
+    }
+    &:nth-child(7) { /* k=3: 開始行 32 + 60*1 = 92. 終了行 92+60=152 */
+      grid-row: 92;
+    }
+    &:nth-child(8) { /* k=4: 開始行 32 + 60*2 = 152. 終了行 152+60=212 */
+      grid-row: 152;
+    }
+    &:nth-child(9) { /* k=5: 開始行 32 + 60*3 = 212. 終了行 212+60=272 */
+      grid-row: 212;
+    }
+    &:nth-child(10) { /* k=6: 開始行 32 + 60*4 = 272. 終了行 272+60=332 */
+      grid-row: 272;
+    }
+    &:nth-child(11) { /* k=7: 開始行 32 + 60*5 = 332. 終了行 332+60=392 */
+      grid-row: 332;
+    }
+    &:nth-child(12) { /* k=8: 開始行 32 + 60*6 = 392. 終了行 392+60=452 */
+      grid-row: 392;
+    }
+    &:nth-child(13) { /* k=9: 開始行 32 + 60*7 = 452. 終了行 452+60=512 */
+      grid-row: 452;
+    }
+    &:nth-child(14) { /* k=10: 開始行 32 + 60*8 = 512. 終了行 512+60=572 */
+      grid-row: 512;
+    }
+    &:nth-child(15) { /* k=11: 開始行 32 + 60*9 = 572. 終了行 572+60=632 */
+      grid-row: 572;
+    }
+    &:nth-child(16) { /* k=12: 開始行 32 + 60*10 = 632. 終了行 632+60=692 */
+      grid-row: 632;
+    }
+  }
+
+  .timeBar {
+    display: flex;
+    justify-content: flex-end;
+    grid-column-start: 1;
+    background-color: gray;
+
+    &:nth-child(17) {
+      grid-row: 2;
+    }
+
+    &:nth-child(18) {
+      grid-row: 32;
+    }
+    &:nth-child(19) {
+      grid-row: 62;
+    }
+    &:nth-child(20) {
+      grid-row: 92;
+    }
+    &:nth-child(21) {
+      grid-row: 122;
+    }
+    &:nth-child(22) {
+      grid-row: 152;
+    }
+    &:nth-child(23) {
+      grid-row: 182;
+    }
+    &:nth-child(24) {
+      grid-row: 212;
+    }
+    &:nth-child(25) {
+      grid-row: 242;
+    }
+    &:nth-child(26) {
+      grid-row: 272;
+    }
+    &:nth-child(27) {
+      grid-row: 302;
+    }
+    &:nth-child(28) {
+      grid-row: 332;
+    }
+    &:nth-child(29) { /* 32 + (17-6)*30 = 32 + 11*30 = 32 + 330 = 362 */
+      grid-row: 362;
+    }
+    &:nth-child(30) { /* 32 + (18-6)*30 = 32 + 12*30 = 32 + 360 = 392 */
+      grid-row: 392;
+    }
+    &:nth-child(31) { /* 32 + (19-6)*30 = 32 + 13*30 = 32 + 390 = 422 */
+      grid-row: 422;
+    }
+    &:nth-child(32) { /* 32 + (20-6)*30 = 32 + 14*30 = 32 + 420 = 452 */
+      grid-row: 452;
+    }
+    &:nth-child(33) { /* 32 + (21-6)*30 = 32 + 15*30 = 32 + 450 = 482 */
+      grid-row: 482;
+    }
+    &:nth-child(34) { /* 32 + (22-6)*30 = 32 + 16*30 = 32 + 480 = 512 */
+      grid-row: 512;
+    }
+    &:nth-child(35) { /* 32 + (23-6)*30 = 32 + 17*30 = 32 + 510 = 542 */
+      grid-row: 542;
+    }
+    &:nth-child(36) { /* 32 + (24-6)*30 = 32 + 18*30 = 32 + 540 = 572 */
+      grid-row: 572;
+    }
+    &:nth-child(37) { /* 32 + (25-6)*30 = 32 + 19*30 = 32 + 570 = 602 */
+      grid-row: 602;
+    }
+    &:nth-child(38) { /* 32 + (26-6)*30 = 32 + 20*30 = 32 + 600 = 632 */
+      grid-row: 632;
+    }
+    &:nth-child(39) { /* 32 + (27-6)*30 = 32 + 21*30 = 32 + 630 = 662 */
+      grid-row: 662;
+    }
+  }
+
   .content {
     grid-row-start: 2;
     grid-row: 2;
     grid-row-end: 691;
     grid-column-start: 2;
     position: relative;
+    width: 20rem;
   }
 }

@@ -70,6 +70,44 @@ export default function EventContent_client({ eventData, locationType }: EventCo
       </div>
       <div className={styles.box}></div>
       <div className={styles.background}></div>
+
+      <div className={styles.timeText}>9:30</div>
+      <div className={styles.timeText}>10:00</div>
+      <div className={styles.timeText}>11:00</div>
+      <div className={styles.timeText}>12:00</div>
+      <div className={styles.timeText}>13:00</div>
+      <div className={styles.timeText}>14:00</div>
+      <div className={styles.timeText}>15:00</div>
+      <div className={styles.timeText}>16:00</div>
+      <div className={styles.timeText}>17:00</div>
+      <div className={styles.timeText}>18:00</div>
+      <div className={styles.timeText}>19:00</div>
+      <div className={styles.timeText}>20:00</div>
+
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+      <div className={styles.timeBar}></div>
+
       <div className={styles.content}>
         {eventData.map(event => (
           <div key={event.id} className={styles.event}>

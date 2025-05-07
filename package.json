@@ -25,7 +25,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
     "prisma": "^6.7.0",
-    "supabase": "^2.22.6",
+    "supabase": "^2.22.12",
     "typescript": "^5"
   }
 }
