@@ -3,7 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Noto_Sans_JP } from 'next/font/google'
 import { BIZ_UDMincho } from 'next/font/google'
 import "./globals.css"
-import MenuIcon from "../components/MenuIcon"
+import MenuIcon from "../components/layout/MenuIcon/MenuIcon"
+import TabBar from "../components/layout/TabBar/TabBar"
+import { unstable_ViewTransition as ViewTransition } from "react"
+import { ScrollManager } from "../components/layout/ScrollManager"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,14 +46,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html>
       <head>
         <meta charSet="utf-8" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${notoSansJp.variable} ${mincho.variable}`}>
-        <MenuIcon />
-        {children}
+        <ViewTransition>
+          {/* <ScrollManager /> */}
+          <MenuIcon />
+          <TabBar />
+          {children}
+        </ViewTransition>
       </body>
     </html>
   );
