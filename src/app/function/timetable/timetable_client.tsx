@@ -69,7 +69,7 @@ export default function Timetable_Client({
     } else {
       // リサイズ時など、maxSelectableAreasが変更された後の調整
       setSelectedArea(prevSelected => {
-        let newSelected = [...prevSelected];
+        const newSelected = [...prevSelected];
         if (newSelected.length > maxSelectableAreas) {
           // 選択数が多すぎる場合: 新しい選択を優先して残す (末尾からmaxSelectableAreas個)
           newSelected = newSelected.slice(newSelected.length - maxSelectableAreas);
