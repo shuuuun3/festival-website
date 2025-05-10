@@ -69,7 +69,7 @@ export default function Timetable_Client({
     } else {
       // リサイズ時など、maxSelectableAreasが変更された後の調整
       setSelectedArea(prevSelected => {
-        let newSelected = [...prevSelected];
+        const newSelected = [...prevSelected];
         if (newSelected.length > maxSelectableAreas) {
           // 選択数が多すぎる場合: 新しい選択を優先して残す (末尾からmaxSelectableAreas個)
           newSelected = newSelected.slice(newSelected.length - maxSelectableAreas);
@@ -90,7 +90,7 @@ export default function Timetable_Client({
   const handleAreaSelect = (areaLabel: string) => {
     setSelectedArea(prevSelected => {
       const currentIndex = prevSelected.indexOf(areaLabel);
-      let newSelectedAreas = [...prevSelected];
+      const newSelectedAreas = [...prevSelected];
 
       if (currentIndex > -1) { // 既に選択されている場合は解除
         newSelectedAreas.splice(currentIndex, 1);
