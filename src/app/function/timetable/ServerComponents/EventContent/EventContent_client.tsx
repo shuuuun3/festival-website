@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import TimeTableContent from "./TimeTableContent/TimeTableContent";
 import styles from "./EventContent_client.module.css";
 
 // イベントオブジェクトの型を定義
@@ -21,6 +22,18 @@ interface EventContentClientProps {
   eventData: EventData[];
   locationType?: string;
 }
+
+// location文字列をCSSクラス名に適した形式に変換するヘルパー関数
+const formatLocationToClassName = (locationType: string | null): string => {
+  if (!locationType) {
+    return styles.locationDefault || 'locationDefault'; // CSS Modulesのクラス名またはプレーンなクラス名
+  }
+  // 例: "ステージA" -> "locationStageA"
+  // スペースを除去し、英字の最初の文字を大文字にするなど、適宜調整してください。
+  const sanitized = locationType.replace(/\s+/g, ''); // スペース除去
+  // CSS Modules を使っている場合、stylesオブジェクト経由でクラス名を取得
+  return styles[`location${sanitized}`] || styles.locationDefault || `location${sanitized}`;
+};
 
 export default function EventContent_client({ eventData, locationType }: EventContentClientProps) {
   const [currentRow, setCurrentRow] = useState(2); // 初期値はヘッダーの次の行 (2行目)
@@ -58,8 +71,10 @@ export default function EventContent_client({ eventData, locationType }: EventCo
     return () => clearInterval(intervalId);
   }, []); // 空の依存配列で、マウント時にのみ実行
 
+  const locationClassName = formatLocationToClassName(locationType ?? null);
+
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${locationClassName}`}>
       <div className={styles.bar} style={{ '--current-row': currentRow } as React.CSSProperties}></div>
       <div className={styles.label}>
         <Link href="">
@@ -111,11 +126,7 @@ export default function EventContent_client({ eventData, locationType }: EventCo
       <div className={styles.content}>
         {eventData.map(event => (
           <div key={event.id} className={styles.event}>
-            <h3>{event.title}</h3>
-            <p>{event.subtitle}</p>
-            <p>{event.description}</p>
-            <p>{event.location}</p>
-            {event.imageUrl && <img src={event.imageUrl} alt={event.title ?? ""} />}
+            <TimeTableContent eventData={event} />
           </div>
         ))}
       </div>

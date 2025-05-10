@@ -2,6 +2,14 @@
   --background: #ffffff;
   --foreground: #171717;
   --deepblue: #272A56;
+  --location-primary-color-stage: #FFA09D;
+  --location-secondary-color-stage: #FFE2E2;
+  --location-primary-color-yard: #91C4FF;
+  --location-secondary-color-yard: #E2F1FF;
+  --location-primary-color-gym: #D9AEFF;
+  --location-secondary-color-gym: #E6E6FA;
+  --location-primary-color-hole: #89FF8D;
+  --location-secondary-color-hole: #E2FFEE;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -15,7 +23,7 @@ html,
 body {
   max-width: 100vw;
   height: auto;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 html {

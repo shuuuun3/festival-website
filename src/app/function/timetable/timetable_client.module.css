@@ -18,8 +18,77 @@
     }
   }
 
+  .selector {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4つの均等なカラム */
+    row-gap: 1rem; /* dateSelector と areaSelector の間の縦の隙間 */
+    column-gap: .5rem; /* ボタン間の横の隙間 */
+    margin: 2rem auto; /* 上下マージン2rem、左右autoで中央寄せ */
+    width: 90%; /* コンテナの幅を画面の90%に */
+
+    .button {
+      text-align: center;
+      padding: 1rem;
+      border: none;
+      border-radius: 1rem;
+      display: block;
+      letter-spacing: .04em;
+      line-height: 2;
+      width: 100%;
+      cursor: pointer;
+
+      background-color: #f2f2f2;
+      color: black;
+    }
+
+    .dateSelector {
+      grid-column: 2 / span 2; /* 2番目のカラムから2カラム分を占有 */
+      grid-row: 1; /* グリッドの1行目に配置 */
+      display: grid;
+      gap: .5rem;
+      grid-template-columns: repeat(2, 1fr); /* 占有したスペースをさらに2分割 */
+      /* margin: 1rem 0; は親グリッドのrow-gapで代替 */
+
+      .button.selected {
+        background-color: var(--deepblue);
+        color: white;
+      }
+    }
+
+    .areaSelector {
+      grid-column: 1 / span 4; /* 1番目のカラムから4カラム分を占有 (全幅) */
+      grid-row: 2; /* グリッドの2行目に配置 */
+      display: grid;
+      gap: .5rem;
+      grid-template-columns: repeat(4, 1fr); /* 占有したスペースを4分割 */
+      /* margin: 2rem 0; は親要素 .selector の margin で代替 */
+
+      .button.selected {
+        color: white;
+
+        &.stage {
+          background-color: var(--location-primary-color-stage);
+        }
+
+        &.yard {
+          background-color: var(--location-primary-color-yard);
+        }
+
+        &.gym {
+          background-color: var(--location-primary-color-gym);
+        }
+
+        &.hole {
+          background-color: var(--location-primary-color-hole);
+        }
+      }
+    }
+  }
+
   .serverPart {
     margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
   }
 
   .wrapper {
