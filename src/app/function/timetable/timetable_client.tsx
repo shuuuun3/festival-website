@@ -90,7 +90,7 @@ export default function Timetable_Client({
   const handleAreaSelect = (areaLabel: string) => {
     setSelectedArea(prevSelected => {
       const currentIndex = prevSelected.indexOf(areaLabel);
-      let newSelectedAreas = [...prevSelected];
+      const newSelectedAreas = [...prevSelected];
 
       if (currentIndex > -1) { // 既に選択されている場合は解除
         newSelectedAreas.splice(currentIndex, 1);
