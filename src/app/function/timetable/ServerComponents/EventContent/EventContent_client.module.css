@@ -14,12 +14,18 @@
   --location-secondary-color: var(--location-secondary-color-hole);
 }
 
+.location体育館 {
+  --location-primary-color: var(--location-primary-color-gym);
+  --location-secondary-color: var(--location-secondary-color-gym);
+}
+
 .wrapper {
-  margin: 1rem;
+  /* margin: 1rem; */
   display: grid;
   grid-template-columns: 60px 1fr;
   grid-template-rows: 60px repeat(690, 1.5px);
   position: relative;
+  width: 100%;
 
   .bar {
     grid-column-start: 1;

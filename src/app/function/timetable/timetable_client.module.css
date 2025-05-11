@@ -91,8 +91,20 @@
     justify-content: space-between;
   }
 
-  .wrapper {
+  .eventContentWrapper {
+    margin-top: 100px;
     height: 300vh;
-    width: 100%;
+    width: 95%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media screen and (max-width: 768px) {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
   }
 }
