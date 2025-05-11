@@ -37,7 +37,6 @@ async function getEventsByLocationAndDate(location: string, dateString?: string)
     }
   }
 
-  console.log(`[SeverAction] Querying Prisma for location: ${location}, dateFilter: ${JSON.stringify(dateFilterCondition)}`);
   try {
     const events = await prisma.event.findMany({
       where: {
@@ -46,7 +45,6 @@ async function getEventsByLocationAndDate(location: string, dateString?: string)
       },
       orderBy: { startDate: "asc" },
     });
-    console.log(`[SeverAction] Found ${events.length} events for location ${location} with current filters.`);
     return events.map((event) => ({
       id: event.id,
       title: event.title,
@@ -64,14 +62,12 @@ async function getEventsByLocationAndDate(location: string, dateString?: string)
 }
 
 export async function getFilteredEvents(selectedDate: string, selectedAreas: string[]): Promise<EventsByLocation[]> {
-  console.log(`[SeverAction] getFilteredEvents called with date: "${selectedDate}", areas: "${selectedAreas.join(', ')}"`);
   try {
     const eventsForLocationsPromises = selectedAreas.map(async (locType) => {
       const events = await getEventsByLocationAndDate(locType, selectedDate);
       return { locationType: locType, events };
     });
     const results = await Promise.all(eventsForLocationsPromises);
-    console.log(`[SeverAction] Successfully fetched events for all selected areas. Count: ${results.length}`);
     return results;
   } catch (error) {
     console.error(`[SeverAction] Critical error in getFilteredEvents:`, error);

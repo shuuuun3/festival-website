@@ -93,7 +93,8 @@
 
   .eventContentWrapper {
     margin-top: 100px;
-    height: 300vh;
+    margin-bottom: 80vh; /*仮のマージン、下に何か追加して調整*/
+    /* height: 300vh; */
     width: 95%;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
