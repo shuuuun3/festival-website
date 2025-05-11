@@ -19,8 +19,8 @@ export interface EventsByLocation {
 }
 
 async function getEventsByLocationAndDate(location: string, dateString?: string): Promise<EventData[]> {
-  const eventYear = 2024; // 例: 実際の開催年
-  const eventMonth = 7;   // 例: 実際の開催月 (JavaScriptの月は0-11なので、7月は6)
+  const eventYear = 2025; // 例: 実際の開催年
+  const eventMonth = 8;   // 例: 実際の開催月 (JavaScriptの月は0-11なので、7月は6)
 
   let dateFilterCondition = {};
   if (dateString) {
