@@ -29,9 +29,10 @@
 
   .bar {
     grid-column-start: 1;
+    grid-column-end: 3; /* 左側のバーは1列目から2列目まで */
     grid-row: var(--current-row); /* JSから渡された行番号を開始位置とし、高さは1行分 */
     background-color: rgb(107 114 128); /* 半透明の赤色 */
-    height: 2px; /* バーの太さ */
+    height: 3px; /* バーの太さ */
     z-index: 5; /* イベントより手前に表示 */
     pointer-events: none; /* クリックイベントを透過させる */
   }
@@ -52,7 +53,7 @@
       top: -88px;
       left: -60px;
       height: 88px;
-      width: 96vw;
+      width: calc(100% + 60px);
       background-color: white;
     }
 

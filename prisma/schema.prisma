@@ -16,12 +16,12 @@ datasource db {
 }
 
 model Event {
- id     Int    @id @default(autoincrement())
- title    String?
- subtitle String?
- description String?
- startDate DateTime?
- endDate   DateTime?
- location  String?
- imageUrl   String?
+  id          Int      @id @default(autoincrement())
+  title       String?
+  subtitle    String?
+  description String?
+  startDate   DateTime?
+  endDate     DateTime?
+  location    String?
+  imageUrl    String?
 }

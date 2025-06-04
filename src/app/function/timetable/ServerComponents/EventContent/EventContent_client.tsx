@@ -124,11 +124,15 @@ export default function EventContent_client({ eventData, locationType }: EventCo
       <div className={styles.timeBar}></div>
 
       <div className={styles.content}>
-        {eventData.map(event => (
-          <div key={event.id} className={styles.event}>
-            <TimeTableContent eventData={event} />
-          </div>
-        ))}
+        {eventData.length > 0 ? (
+          eventData.map(event => (
+            <div key={event.id} className={styles.event}>
+              <TimeTableContent eventData={event} />
+            </div>
+          ))
+        ) : (
+          <p>イベントデータがありません。</p>
+        )}
       </div>
     </div>
   );

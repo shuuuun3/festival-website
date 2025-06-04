@@ -2,8 +2,8 @@
 
 import styles from "./timetable_client.module.css";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { animateTextByChar } from "@/src/utils/animateTextByChar";
-import { getFilteredEvents, EventsByLocation } from "./SeverAction";
+import { animateTextByChar } from "@/src/utils/animateTextByChar"; // AnimateTextByCharParams をインポート
+import { getAllEventsForDate, EventsByLocation } from "./SeverAction"; // getFilteredEvents を getAllEventsForDate に変更
 import EventContent_client from "./ServerComponents/EventContent/EventContent_client";
 
 // 日付ボタンの定義をコンポーネントの外に移動
@@ -24,10 +24,22 @@ export default function Timetable_Client() {
   const title_Ref = useRef<HTMLHeadingElement>(null);
   const [selectedDate, setSelectedDate] = useState<string>(dateOptions[0].value); // 初期値をvalueで設定
   const [selectedArea, setSelectedArea] = useState<string[]>([]); // エリア選択を文字列配列に変更
-  const isInitialAreaLoadRef = useRef(true); // エリアの初期選択が完了したかのフラグ
   const [maxSelectableAreas, setMaxSelectableAreas] = useState<number>(3); // 初期値はPCサイズ想定
-  const [eventsByLocation, setEventsByLocation] = useState<EventsByLocation[]>([]);
-  const [isPending, startTransition] = useTransition(); // サーバーアクションのローディング状態管理
+
+  // 全日程・全エリアのイベントデータを保持するステート
+  const [allEventsData, setAllEventsData] = useState<{[date: string]: EventsByLocation[] | undefined}>({});
+  // 現在選択されている日付に基づいて表示するイベントデータ
+  const [currentDisplayEvents, setCurrentDisplayEvents] = useState<EventsByLocation[]>([]);
+  // 初期データロード中の状態
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  // データロードエラーの状態
+  const [errorLoading, setErrorLoading] = useState<string | null>(null);
+  // 日付変更時のUI更新をスムーズにするためのトランジション
+  const [isTransitioningDate, startTransitionDate] = useTransition();
+
+  // イベントの開催年・月 (実際のイベントに合わせて設定してください)
+  const EVENT_YEAR = 2025; // 例: 2024年
+  const EVENT_MONTH = 9;   // 例: 7月 (JavaScriptの月は0-11なので注意、サーバーアクション側で1-12に調整)
 
   useEffect(() => {
     if (title_Ref.current) {
@@ -53,67 +65,75 @@ export default function Timetable_Client() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // 初期データロード: 全日程・全エリアのイベントデータを取得
   useEffect(() => {
-    // areaOptionsが利用可能で、maxSelectableAreasが0より大きい場合のみ実行
-    if (areaOptions.length === 0 || maxSelectableAreas <= 0) {
-      if (maxSelectableAreas === 0) setSelectedArea([]); // 選択不可なら空にする
-      return;
-    }
+    const fetchAllInitialData = async () => {
+      setIsInitialLoading(true);
+      setErrorLoading(null);
+      try {
+        const dataPromises = dateOptions.map(dateOpt =>
+          getAllEventsForDate(dateOpt.value, areaOptions.map(opt => opt.value), EVENT_YEAR, EVENT_MONTH)
+        );
+        const results = await Promise.all(dataPromises);
+        const newData: {[date: string]: EventsByLocation[]} = {};
+        dateOptions.forEach((dateOpt, index) => {
+          newData[dateOpt.value] = results[index];
+        });
+        setAllEventsData(newData);
 
-    if (isInitialAreaLoadRef.current) {
-      // 初期ロード時: areaOptionsの先頭からmaxSelectableAreas個を選択
-      setSelectedArea(areaOptions.slice(0, maxSelectableAreas).map(opt => opt.value));
-      isInitialAreaLoadRef.current = false;
-    } else {
-      // リサイズ時など、maxSelectableAreasが変更された後の調整
-      setSelectedArea(prevSelectedAreas => {
-        let newSelected = [...prevSelectedAreas];
-        if (newSelected.length > maxSelectableAreas) {
-          // 選択数が多すぎる場合: 新しい選択を優先して残す (末尾からmaxSelectableAreas個)
-          newSelected = newSelected.slice(newSelected.length - maxSelectableAreas);
-        } else if (newSelected.length < maxSelectableAreas) {
-          // 選択数が少なすぎる場合: 現在の選択を維持しつつ、不足分をareaOptionsから追加
-          const currentSelectionSet = new Set(newSelected);
-          const needed = maxSelectableAreas - newSelected.length;
-          const candidates = areaOptions
-            .filter(opt => !currentSelectionSet.has(opt.value))
-            .slice(0, needed);
-          newSelected.push(...candidates.map(opt => opt.value));
+        // 初期表示エリアを設定
+        if (areaOptions.length > 0 && maxSelectableAreas > 0) {
+          setSelectedArea(areaOptions.slice(0, maxSelectableAreas).map(opt => opt.value));
         }
-        return newSelected;
-      });
-    }
-  }, [maxSelectableAreas]); // areaOptionsは定数なので依存配列から除外
 
-  // 選択された日付またはエリアが変更されたときにイベントを再取得
-  useEffect(() => {
-     let isActive = true; // エフェクトがアクティブかどうかを追跡
-
-    if (selectedArea.length > 0 && selectedDate) {
-      startTransition(async () => {
-        try {
-          const data = await getFilteredEvents(selectedDate, selectedArea);
-          if (isActive) { // コンポーネント/エフェクトがまだアクティブな場合のみ状態を更新
-            setEventsByLocation(data);
-          }
-        } catch (error) {
-          console.error("Failed to fetch events:", error);
-          if (isActive) {
-            // エラーが発生した場合、イベントリストを空にするか、
-            // エラーメッセージを表示するなどの処理を行う
-            setEventsByLocation([]);
-          }
-        }
-      });
-    } else {
-      if (isActive) {
-        setEventsByLocation([]); // 選択がない場合は空にする
+      } catch (err) {
+        console.error("Failed to fetch initial timetable data:", err);
+        setErrorLoading("タイムテーブル情報の読み込みに失敗しました。");
+      } finally {
+        setIsInitialLoading(false);
       }
-    }
-  return () => {
-      isActive = false; // クリーンアップ時にフラグをfalseにし、古い非同期処理の結果を無視
     };
-  }, [selectedDate, selectedArea, startTransition]); // startTransitionも依存配列に追加
+    fetchAllInitialData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [EVENT_YEAR, EVENT_MONTH]); // 初回のみ実行。dateOptions, areaOptions, maxSelectableAreas は変更されない想定
+
+  // 選択された日付、または全データが更新されたら、表示用イベントデータを更新
+  useEffect(() => {
+    if (selectedDate && allEventsData[selectedDate]) {
+      startTransitionDate(() => {
+        setCurrentDisplayEvents(allEventsData[selectedDate] || []);
+      });
+    } else if (selectedDate && !allEventsData[selectedDate] && !isInitialLoading) {
+      // データが存在しない場合 (ロード完了後)
+      startTransitionDate(() => {
+        setCurrentDisplayEvents([]);
+      });
+    }
+  }, [selectedDate, allEventsData, isInitialLoading]);
+
+  // maxSelectableAreas が変更されたときに selectedArea を調整
+  useEffect(() => {
+    if (isInitialLoading) return; // 初期ロード中はエリア選択の調整をスキップ
+
+    setSelectedArea(prevSelectedAreas => {
+      let newSelected = [...prevSelectedAreas];
+      if (newSelected.length > maxSelectableAreas) {
+        newSelected = newSelected.slice(newSelected.length - maxSelectableAreas);
+      } else if (newSelected.length < maxSelectableAreas && newSelected.length < areaOptions.length) {
+        const currentSelectionSet = new Set(newSelected);
+        const needed = maxSelectableAreas - newSelected.length;
+        const candidates = areaOptions
+          .filter(opt => !currentSelectionSet.has(opt.value))
+          .slice(0, needed);
+        newSelected.push(...candidates.map(opt => opt.value));
+      }
+      // maxSelectableAreas が 0 の場合、選択を空にする
+      if (maxSelectableAreas === 0) {
+        return [];
+      }
+      return newSelected;
+    });
+  }, [maxSelectableAreas, isInitialLoading]);
 
   const handleDateSelect = (dateValue: string) => {
     setSelectedDate(dateValue);
@@ -173,26 +193,30 @@ export default function Timetable_Client() {
       </div>
 
       <div className={styles.eventContentWrapper}>
-        {isPending && <div className={styles.loading}>Loading...</div>}
-        {!isPending && eventsByLocation.length === 0 && selectedArea.length > 0 && <div className={styles.noEvents}>選択された条件に合うイベントはありません。</div>}
-        {!isPending && eventsByLocation.map(({ locationType, events }) => (
-          <EventContent_client
-            key={locationType}
-            eventData={events}
-            locationType={locationType}
-          />
-        ))}
+        {isInitialLoading && <div className={styles.loading}>タイムテーブルを読み込んでいます...</div>}
+        {errorLoading && <div className={styles.error}>{errorLoading}</div>}
+        {!isInitialLoading && !errorLoading && (
+          currentDisplayEvents.length > 0 ? (
+            currentDisplayEvents.map(({ locationType, events }) => (
+              <div
+                key={`${selectedDate}-${locationType}`} // 日付とロケーションでユニークなキー
+                style={{ display: selectedArea.includes(locationType) ? 'block' : 'none' }}
+                className={styles.eventLocationContainer} // 必要に応じてスタイル調整用クラス
+              >
+                <EventContent_client
+                  eventData={events}
+                  locationType={locationType}
+                />
+              </div>
+            ))
+          ) : (
+            selectedArea.length > 0 && <div className={styles.noEvents}>選択された日付に表示できるタイムテーブル情報がありません。</div>
+          )
+        )}
+        {/* 日付変更中のトランジション表示 (任意) */}
+        {isTransitioningDate && !isInitialLoading && <div className={styles.loadingOverlay}>情報を更新中...</div>}
       </div>
       <div className={styles.wrapper}></div>
     </div>
   );
 }
-
-
-      // <ul>
-      //   {events.map((event) => (
-      //     <li key={event.id}>
-      //       {event.title} - {event.subtitle} - {event.description} - ({event.startDate?.toString() ?? "日付未定"} - {event.endDate?.toString() ?? "日付未定"}) - {event.location} - {event.imageUrl}
-      //     </li>
-      //   ))}
-      // </ul>
