@@ -11,16 +11,9 @@ interface EventData {
   endDate: Date | null;
   location: string | null;
   imageUrl: string | null;
+  displayTimeStartTime?: string; // 追加: サーバーで生成された表示用時刻
+  displayTimeEndTime?: string;   // 追加: サーバーで生成された表示用時刻
 }
-
-const formatTime = (date: Date | null): string => {
-  if (!date) {
-    return '--:--'; // 日付がない場合のプレースホルダー
-  }
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
-};
 
 // location文字列をCSSクラス名に適した形式に変換するヘルパー関数
 const formatLocationToClassName = (location: string | null): string => {
@@ -38,12 +31,30 @@ export default function TimeTableContent ({ eventData }: { eventData: EventData 
 
   const locationClassName = formatLocationToClassName(eventData.location);
 
+  const getGridRow = (timeStr?: string | null) => {
+    if (!timeStr) return 2;
+    const [h, m] = timeStr.split(":").map(Number);
+    const baseMinutes = 9 * 60 + 30; // 9:30=570分
+    const eventMinutes = h * 60 + m;
+    return 2 + (eventMinutes - baseMinutes);
+  };
+
+  const gridRowStart = getGridRow(eventData.displayTimeStartTime);
+  const gridRowEnd = getGridRow(eventData.displayTimeEndTime);
+
   return (
-    <div className={`${styles.wrapper} ${locationClassName}`}>
-        <p className={styles.time}>
-          {formatTime(eventData.startDate)} - {formatTime(eventData.endDate)}
-        </p>
-        <p className={styles.title}>{eventData.title ?? 'タイトルなし'}</p>
+    <div
+      className={`${styles.wrapper} ${locationClassName}`}
+      style={{
+        gridRowStart: gridRowStart,
+        gridRowEnd: gridRowEnd,
+      }}
+    >
+      <p className={styles.time}>
+        {/* サーバーで生成された表示用時刻をそのまま表示 */}
+        {(eventData.displayTimeStartTime ?? '--:--') + ' - ' + (eventData.displayTimeEndTime ?? '--:--')}
+      </p>
+      <p className={styles.title}>{eventData.title ?? 'タイトルなし'}</p>
     </div>
   )
 }

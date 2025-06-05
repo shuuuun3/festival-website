@@ -30,7 +30,8 @@
 
 .wrapper {
   background-color: var(--location-primary-color);
-  margin: 1rem;
   border-radius: 10px;
+  margin: 2px auto;
   width: 300px;
+  grid-column-start: 2;
 }

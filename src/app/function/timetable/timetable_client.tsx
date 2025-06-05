@@ -196,22 +196,18 @@ export default function Timetable_Client() {
         {isInitialLoading && <div className={styles.loading}>タイムテーブルを読み込んでいます...</div>}
         {errorLoading && <div className={styles.error}>{errorLoading}</div>}
         {!isInitialLoading && !errorLoading && (
-          currentDisplayEvents.length > 0 ? (
-            currentDisplayEvents.map(({ locationType, events }) => (
-              <div
-                key={`${selectedDate}-${locationType}`} // 日付とロケーションでユニークなキー
-                style={{ display: selectedArea.includes(locationType) ? 'block' : 'none' }}
-                className={styles.eventLocationContainer} // 必要に応じてスタイル調整用クラス
-              >
-                <EventContent_client
-                  eventData={events}
-                  locationType={locationType}
-                />
-              </div>
-            ))
-          ) : (
-            selectedArea.length > 0 && <div className={styles.noEvents}>選択された日付に表示できるタイムテーブル情報がありません。</div>
-          )
+          currentDisplayEvents.length > 0 && currentDisplayEvents.map(({ locationType, events }) => (
+            <div
+              key={`${selectedDate}-${locationType}`} // 日付とロケーションでユニークなキー
+              style={{ display: selectedArea.includes(locationType) ? 'block' : 'none' }}
+              className={styles.eventLocationContainer} // 必要に応じてスタイル調整用クラス
+            >
+              <EventContent_client
+                eventData={events}
+                locationType={locationType}
+              />
+            </div>
+          ))
         )}
         {/* 日付変更中のトランジション表示 (任意) */}
         {isTransitioningDate && !isInitialLoading && <div className={styles.loadingOverlay}>情報を更新中...</div>}

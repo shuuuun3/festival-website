@@ -11,6 +11,8 @@ export interface EventDataForClient {
   description: string | null;
   startDate: Date | null;
   endDate: Date | null;
+  displayTimeStartTime?: string; // DBに保存された時刻のHH:mm部分 (JSTとして解釈)
+  displayTimeEndTime?: string;   // DBに保存された時刻のHH:mm部分 (JSTとして解釈)
   location: string | null;
   imageUrl: string | null;
 }
@@ -45,9 +47,9 @@ export async function getAllEventsForDate(
     return [];
   }
 
-  // JSTの00:00をUTCに変換（-9時間）
+  // DBにJSTとして保存されていると仮定し、JSTの00:00と23:59:59.999に対応するDateオブジェクトを作成
+  // PrismaはTIMESTAMP WITHOUT TIME ZONEをUTCとして解釈するため、UTCで指定することでDBのJST値と一致させる
   const dateStart = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0) - 9 * 60 * 60 * 1000);
-  // JSTの23:59:59.999をUTCに変換（-9時間）
   const dateEnd = new Date(Date.UTC(year, month - 1, day, 23, 59, 59, 999) - 9 * 60 * 60 * 1000);
 
   const eventsByLocationArray: EventsByLocation[] = [];
@@ -65,16 +67,31 @@ export async function getAllEventsForDate(
         orderBy: { startDate: "asc" },
       });
 
-      const mappedEvents: EventDataForClient[] = eventsFromDb.map((event) => ({
-        id: event.id,
-        title: event.title,
-        subtitle: event.subtitle,
-        description: event.description,
-        startDate: event.startDate,
-        endDate: event.endDate,
-        location: event.location,
-        imageUrl: event.imageUrl,
-      }));
+      const formatPreservedTime = (date: Date | null): string | undefined => {
+        if (!date) return undefined;
+        // DBに 'YYYY-MM-DD HH:MM:SS' (JSTのつもり) で保存されていると仮定。
+        // Prismaはこれを Dateオブジェクト 'YYYY-MM-DDTHH:MM:SS.000Z' (UTCのHH:MM)として解釈する。
+        // そのため、getUTCHours() と getUTCMinutes() でDBのHH:MM部分を取り出す。
+        const d = new Date(date);
+        const hours = d.getUTCHours().toString().padStart(2, '0');
+        const minutes = d.getUTCMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+      };
+
+      const mappedEvents: EventDataForClient[] = eventsFromDb.map((event) => {
+        return {
+          id: event.id,
+          title: event.title,
+          subtitle: event.subtitle,
+          description: event.description,
+          startDate: event.startDate, // 元のDateオブジェクトも保持
+          endDate: event.endDate,     // 元のDateオブジェクトも保持
+          displayTimeStartTime: formatPreservedTime(event.startDate),
+          displayTimeEndTime: formatPreservedTime(event.endDate),
+          location: event.location,
+          imageUrl: event.imageUrl,
+        };
+      });
 
       eventsByLocationArray.push({
         locationType: location,
