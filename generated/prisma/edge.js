@@ -133,7 +133,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\shunsuke\\Desktop\\festival-website\\generated\\prisma",
+      "value": "C:\\Users\\shuns\\OneDrive\\デスクトップ\\festival-website\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -147,7 +147,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\shunsuke\\Desktop\\festival-website\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\shuns\\OneDrive\\デスクトップ\\festival-website\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

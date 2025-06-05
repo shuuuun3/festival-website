@@ -125,7 +125,7 @@ export default function EventContent_client({ eventData, locationType }: EventCo
 
       {eventData.length > 0 &&
         eventData.map(event => (
-          <TimeTableContent eventData={event} />
+          <TimeTableContent key={event.id} eventData={event} />
         ))}
     </div>
   );
