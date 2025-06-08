@@ -8,6 +8,7 @@
     font-size: 5vw;
     color: var(--deepblue);
     margin-top: 20vh;
+    user-select: none;
 
     @media screen and (max-width: 1200px) {
       font-size: 7vw;

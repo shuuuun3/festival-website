@@ -34,7 +34,7 @@ export default function TimeTableContent ({ eventData }: { eventData: EventData 
   const getGridRow = (timeStr?: string | null) => {
     if (!timeStr) return 2;
     const [h, m] = timeStr.split(":").map(Number);
-    const baseMinutes = 9 * 60 + 30; // 9:30=570分
+    const baseMinutes = 8 * 60 + 30;
     const eventMinutes = h * 60 + m;
     return 2 + (eventMinutes - baseMinutes);
   };
