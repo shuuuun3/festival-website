@@ -48,7 +48,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { useAnimations, useGLTF } from "@react-three/drei";
-import { Object3D, AnimationAction } from "three";
+import { Object3D } from "three";
 import * as THREE from "three";
 import { ThreeEvent } from "@react-three/fiber";
 
